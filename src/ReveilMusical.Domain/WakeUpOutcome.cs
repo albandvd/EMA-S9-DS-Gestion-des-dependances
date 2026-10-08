@@ -7,5 +7,5 @@ public sealed record WakeUpOutcome(
     bool ChannelDegraded,
     IReadOnlyList<string> DegradationReasons)
 {
-    public bool Degraded => MusicDegraded || ChannelDegraded;
+    public bool Degraded => DegradationReasons.Count > 0;
 }
