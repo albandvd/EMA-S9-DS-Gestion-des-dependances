@@ -30,7 +30,7 @@ Content-Type: application/json
   "weather": "NEIGE"
 }
 
-### Canal préféré inconnu (whatsapp pas encore enregistré) -> repli sur FallbackOrder
+### Canal préféré inconnu (signal n'est pas un canal enregistré) -> repli sur FallbackOrder
 POST {{ReveilMusical.Api_HostAddress}}/api/wake-ups
 Content-Type: application/json
 

@@ -27,10 +27,12 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<FakeEmailClient>();
         services.AddSingleton<FakeSmsGateway>();
         services.AddSingleton<FakePushService>();
+        services.AddSingleton<FakeWhatsAppClient>();
 
         services.AddSingleton<INotificationChannel, EmailChannelAdapter>();
         services.AddSingleton<INotificationChannel, SmsChannelAdapter>();
         services.AddSingleton<INotificationChannel, PushChannelAdapter>();
+        services.AddSingleton<INotificationChannel, WhatsAppChannelAdapter>();
 
         services.AddSingleton<INotificationDispatcher, NotificationDispatcher>();
 

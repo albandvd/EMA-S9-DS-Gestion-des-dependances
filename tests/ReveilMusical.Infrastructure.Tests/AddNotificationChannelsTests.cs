@@ -29,6 +29,6 @@ public class AddNotificationChannelsTests
         var channels = provider.GetServices<INotificationChannel>().ToList();
 
         dispatcher.ShouldNotBeNull();
-        channels.Select(c => c.Id.Value).ShouldBe(["email", "sms", "push"], ignoreOrder: true);
+        channels.Select(c => c.Id.Value).ShouldBe(["email", "sms", "push", "whatsapp"], ignoreOrder: true);
     }
 }

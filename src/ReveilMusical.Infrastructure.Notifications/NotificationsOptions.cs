@@ -11,6 +11,8 @@ internal sealed class NotificationsOptions
     public ChannelSimulationOptions Sms { get; set; } = new();
 
     public ChannelSimulationOptions Push { get; set; } = new();
+
+    public ChannelSimulationOptions WhatsApp { get; set; } = new();
 }
 
 internal sealed class ChannelSimulationOptions
