@@ -54,6 +54,7 @@ jobs:
           -targetdir:"coverage"
           -reporttypes:"Html;MarkdownSummaryGithub;JsonSummary"
           -assemblyfilters:"+ReveilMusical.*;-ReveilMusical.*Tests"
+          -filefilters:"+*;-*OpenApiXmlCommentSupport*"
 
       - name: Publish coverage summary
         if: always()
@@ -117,6 +118,8 @@ jobs:
           --input .
           --allowed-license-types licenses-allowed.json
           --include-transitive
+          --use-project-assets-json
+          --manual-package-information license-exceptions.json
           --json --outfile licenses-report.json
 
       - name: Upload license report
@@ -137,3 +140,40 @@ jobs:
 
       - name: Dependency review
         uses: actions/dependency-review-action@v4
+
+  sbom:
+    name: Publish SBOM
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+          cache: true
+          cache-dependency-path: "**/packages.lock.json"
+
+      - name: Restore .NET tools
+        run: dotnet tool restore
+
+      - name: Restore
+        run: dotnet restore --locked-mode
+
+      - name: Generate CycloneDX SBOM
+        run: >
+          dotnet tool run dotnet-CycloneDX --allow-roll-forward --
+          ReveilMusical.slnx
+          -o docs/sbom
+          -fn sbom.json
+          -F Json
+          --set-name ReveilMusical
+          --set-version ${{ github.sha }}
+
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: docs/sbom/sbom.json
