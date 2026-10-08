@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  DOMAIN_APP_COVERAGE_THRESHOLD: 90
+  GLOBAL_COVERAGE_THRESHOLD: 80
+
+jobs:
+  build-and-test:
+    name: Build, format and test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+          cache: true
+          cache-dependency-path: "**/packages.lock.json"
+
+      - name: Restore .NET tools
+        run: dotnet tool restore
+
+      - name: Restore
+        run: dotnet restore --locked-mode
+
+      - name: Build (Release, warnings as errors)
+        run: dotnet build --no-restore -c Release
+
+      - name: Verify formatting
+        run: dotnet format --verify-no-changes
+
+      - name: Test with coverage
+        run: >
+          dotnet test --no-build -c Release
+          --collect:"XPlat Code Coverage"
+          --results-directory ./TestResults
+
+      - name: Generate coverage report
+        if: always()
+        run: >
+          dotnet tool run reportgenerator
+          -reports:"TestResults/**/coverage.cobertura.xml"
+          -targetdir:"coverage"
+          -reporttypes:"Html;MarkdownSummaryGithub;JsonSummary"
+          -assemblyfilters:"+ReveilMusical.*;-ReveilMusical.*Tests"
+
+      - name: Publish coverage summary
+        if: always()
+        run: cat coverage/SummaryGithub.md >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || echo "No coverage summary generated yet." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Enforce coverage thresholds
+        if: always()
+        run: ./scripts/check-coverage.sh coverage/Summary.json
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+          if-no-files-found: ignore
