@@ -24,11 +24,15 @@ public class MusicBrainzTrackProviderTests
     private static MusicBrainzTrackProvider CreateProvider(
         Func<HttpRequestMessage, HttpResponseMessage> responder,
         string userAgent = ContactUserAgent,
-        RateLimiter? rateLimiter = null)
+        RateLimiter? rateLimiter = null,
+        bool simulateFailure = false)
     {
         var handler = new FakeHttpMessageHandler(responder);
         var httpClient = new HttpClient(handler) { BaseAddress = new Uri("https://musicbrainz.org/ws/2/") };
-        var options = Options.Create(new MusicOptions { MusicBrainz = new MusicBrainzOptions { UserAgent = userAgent } });
+        var options = Options.Create(new MusicOptions
+        {
+            MusicBrainz = new MusicBrainzOptions { UserAgent = userAgent, SimulateFailure = simulateFailure },
+        });
         return new MusicBrainzTrackProvider(httpClient, options, rateLimiter ?? CreateRateLimiter(), NullLogger<MusicBrainzTrackProvider>.Instance);
     }
 
@@ -114,5 +118,22 @@ public class MusicBrainzTrackProviderTests
         await Should.ThrowAsync<RateLimitExceededException>(
             () => provider.FindAsync(new TrackQuery("second, too soon"), CancellationToken.None));
         httpCalls.ShouldBe(1);
+    }
+
+    [Fact]
+    public async Task FindAsync_SimulatedFailure_ThrowsWithoutCallingHttp()
+    {
+        var httpCalls = 0;
+        var provider = CreateProvider(
+            _ =>
+            {
+                httpCalls++;
+                return JsonFixture("musicbrainz-recording-empty.json");
+            },
+            simulateFailure: true);
+
+        await Should.ThrowAsync<InvalidOperationException>(
+            () => provider.FindAsync(new TrackQuery("anything"), CancellationToken.None));
+        httpCalls.ShouldBe(0);
     }
 }

@@ -2,6 +2,7 @@ using System.Net;
 using System.Text;
 using System.Threading.RateLimiting;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
 using ReveilMusical.Application;
 using ReveilMusical.Infrastructure.Music;
 
@@ -24,6 +25,7 @@ public class ItunesTrackProviderContractTests : TrackProviderContractTests
             AutoReplenishment = false,
             QueueLimit = 0,
         });
-        return new ItunesTrackProvider(httpClient, rateLimiter, NullLogger<ItunesTrackProvider>.Instance);
+        var options = Options.Create(new MusicOptions());
+        return new ItunesTrackProvider(httpClient, options, rateLimiter, NullLogger<ItunesTrackProvider>.Instance);
     }
 }

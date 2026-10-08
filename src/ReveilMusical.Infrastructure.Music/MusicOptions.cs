@@ -29,6 +29,8 @@ internal sealed class ItunesOptions
 
     [Range(1, int.MaxValue)]
     public int TimeoutSeconds { get; set; } = 2;
+
+    public bool SimulateFailure { get; set; }
 }
 
 internal sealed class MusicBrainzOptions
@@ -41,4 +43,6 @@ internal sealed class MusicBrainzOptions
 
     [Range(1, int.MaxValue)]
     public int TimeoutSeconds { get; set; } = 2;
+
+    public bool SimulateFailure { get; set; }
 }

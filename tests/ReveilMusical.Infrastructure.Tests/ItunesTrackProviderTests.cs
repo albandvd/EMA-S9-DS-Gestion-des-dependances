@@ -2,6 +2,7 @@ using System.Net;
 using System.Text;
 using System.Threading.RateLimiting;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
 using ReveilMusical.Domain;
 using ReveilMusical.Infrastructure.Music;
 
@@ -20,11 +21,13 @@ public class ItunesTrackProviderTests
 
     private static ItunesTrackProvider CreateProvider(
         Func<HttpRequestMessage, HttpResponseMessage> responder,
-        RateLimiter? rateLimiter = null)
+        RateLimiter? rateLimiter = null,
+        bool simulateFailure = false)
     {
         var handler = new FakeHttpMessageHandler(responder);
         var httpClient = new HttpClient(handler) { BaseAddress = new Uri("https://itunes.apple.com/") };
-        return new ItunesTrackProvider(httpClient, rateLimiter ?? CreateRateLimiter(), NullLogger<ItunesTrackProvider>.Instance);
+        var options = Options.Create(new MusicOptions { Itunes = new ItunesOptions { SimulateFailure = simulateFailure } });
+        return new ItunesTrackProvider(httpClient, options, rateLimiter ?? CreateRateLimiter(), NullLogger<ItunesTrackProvider>.Instance);
     }
 
     private static HttpResponseMessage JsonFixture(string fileName) => new(HttpStatusCode.OK)
@@ -112,5 +115,22 @@ public class ItunesTrackProviderTests
         await Should.ThrowAsync<RateLimitExceededException>(
             () => provider.FindAsync(new TrackQuery("one too many"), CancellationToken.None));
         httpCalls.ShouldBe(20);
+    }
+
+    [Fact]
+    public async Task FindAsync_SimulatedFailure_ThrowsWithoutCallingHttp()
+    {
+        var httpCalls = 0;
+        var provider = CreateProvider(
+            _ =>
+            {
+                httpCalls++;
+                return JsonFixture("itunes-search-empty.json");
+            },
+            simulateFailure: true);
+
+        await Should.ThrowAsync<InvalidOperationException>(
+            () => provider.FindAsync(new TrackQuery("anything"), CancellationToken.None));
+        httpCalls.ShouldBe(0);
     }
 }
