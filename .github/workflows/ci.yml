@@ -70,3 +70,70 @@ jobs:
           name: coverage-report
           path: coverage/
           if-no-files-found: ignore
+
+  dependency-audit:
+    name: Dependency audit (vulnerabilities, freshness, licenses)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+          cache: true
+          cache-dependency-path: "**/packages.lock.json"
+
+      - name: Restore .NET tools
+        run: dotnet tool restore
+
+      - name: Restore (NuGetAudit fails the build on known vulnerabilities)
+        run: dotnet restore --locked-mode
+
+      - name: List vulnerable packages (informative detail)
+        if: always()
+        run: |
+          {
+            echo "### Vulnerable packages"
+            echo '```'
+            dotnet list package --vulnerable --include-transitive || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: List outdated packages (informative, non-blocking)
+        if: always()
+        run: |
+          {
+            echo "### Outdated packages"
+            echo '```'
+            dotnet list package --outdated --include-transitive || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Check licenses against the allow-list (blocking)
+        run: >
+          dotnet tool run dotnet-project-licenses --allow-roll-forward --
+          --input .
+          --allowed-license-types licenses-allowed.json
+          --include-transitive
+          --json --outfile licenses-report.json
+
+      - name: Upload license report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: license-report
+          path: licenses-report.json
+          if-no-files-found: ignore
+
+  dependency-review:
+    name: Dependency review (pull requests)
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Dependency review
+        uses: actions/dependency-review-action@v4
