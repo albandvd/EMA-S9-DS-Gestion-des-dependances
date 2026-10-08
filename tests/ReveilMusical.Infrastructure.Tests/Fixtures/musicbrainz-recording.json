@@ -1,0 +1,16 @@
+{
+  "created": "2026-01-01T00:00:00.000Z",
+  "count": 1,
+  "offset": 0,
+  "recordings": [
+    {
+      "id": "a1b2c3d4-e5f6-4789-9abc-def012345678",
+      "title": "Here Comes the Sun",
+      "artist-credit": [
+        {
+          "name": "The Beatles"
+        }
+      ]
+    }
+  ]
+}

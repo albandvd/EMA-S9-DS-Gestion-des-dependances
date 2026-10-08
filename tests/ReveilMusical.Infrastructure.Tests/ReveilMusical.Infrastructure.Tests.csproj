@@ -7,6 +7,10 @@
     <PackageReference Include="xunit.runner.visualstudio" />
     <PackageReference Include="Shouldly" />
     <PackageReference Include="NSubstitute" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" />
+    <PackageReference Include="Microsoft.Extensions.Logging" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,6 +21,11 @@
 
   <ItemGroup>
     <ProjectReference Include="../../src/ReveilMusical.Infrastructure.Users/ReveilMusical.Infrastructure.Users.csproj" />
+    <ProjectReference Include="../../src/ReveilMusical.Infrastructure.Music/ReveilMusical.Infrastructure.Music.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Fixtures/**" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>
