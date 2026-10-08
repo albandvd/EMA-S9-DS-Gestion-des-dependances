@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="Shouldly" />
+    <PackageReference Include="TngTech.ArchUnitNET" />
+    <PackageReference Include="TngTech.ArchUnitNET.xUnit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+    <Using Include="Shouldly" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/ReveilMusical.Domain/ReveilMusical.Domain.csproj" />
+    <ProjectReference Include="../../src/ReveilMusical.Application/ReveilMusical.Application.csproj" />
+    <ProjectReference Include="../../src/ReveilMusical.Infrastructure.Music/ReveilMusical.Infrastructure.Music.csproj" />
+    <ProjectReference Include="../../src/ReveilMusical.Infrastructure.Notifications/ReveilMusical.Infrastructure.Notifications.csproj" />
+    <ProjectReference Include="../../src/ReveilMusical.Infrastructure.Users/ReveilMusical.Infrastructure.Users.csproj" />
+  </ItemGroup>
+
+</Project>

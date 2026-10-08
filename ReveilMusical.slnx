@@ -10,6 +10,7 @@
   <Folder Name="/tests/">
     <Project Path="tests/ReveilMusical.Api.Tests/ReveilMusical.Api.Tests.csproj" />
     <Project Path="tests/ReveilMusical.Application.Tests/ReveilMusical.Application.Tests.csproj" />
+    <Project Path="tests/ReveilMusical.Architecture.Tests/ReveilMusical.Architecture.Tests.csproj" />
     <Project Path="tests/ReveilMusical.Domain.Tests/ReveilMusical.Domain.Tests.csproj" />
     <Project Path="tests/ReveilMusical.Infrastructure.Tests/ReveilMusical.Infrastructure.Tests.csproj" />
   </Folder>
