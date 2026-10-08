@@ -2,5 +2,5 @@ namespace ReveilMusical.Application;
 
 public interface IOutbox
 {
-    Task WriteAsync(string channel, string content, CancellationToken cancellationToken);
+    void Write(string channel, string content);
 }

@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="../../src/ReveilMusical.Infrastructure.Users/ReveilMusical.Infrastructure.Users.csproj" />
     <ProjectReference Include="../../src/ReveilMusical.Infrastructure.Music/ReveilMusical.Infrastructure.Music.csproj" />
+    <ProjectReference Include="../../src/ReveilMusical.Infrastructure.Notifications/ReveilMusical.Infrastructure.Notifications.csproj" />
   </ItemGroup>
 
   <ItemGroup>

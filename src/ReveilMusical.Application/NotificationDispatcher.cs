@@ -66,7 +66,7 @@ public sealed class NotificationDispatcher : INotificationDispatcher
             "All notification channels failed for {Recipient}: {Reasons}",
             message.Recipient,
             string.Join("; ", reasons));
-        await _outbox.WriteAsync(LastResortChannelId.Value, $"{message.Recipient}: {message.Text}", cancellationToken);
+        _outbox.Write(LastResortChannelId.Value, $"{message.Recipient}: {message.Text}");
 
         return new ChannelDispatchResult(LastResortChannelId, Degraded: true, reasons);
     }

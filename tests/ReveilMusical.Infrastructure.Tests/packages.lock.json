@@ -409,6 +409,14 @@
           "ReveilMusical.Application": "[1.0.0, )"
         }
       },
+      "reveilmusical.infrastructure.notifications": {
+        "type": "Project",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "[10.0.12, )",
+          "Microsoft.Extensions.Options.ConfigurationExtensions": "[10.0.12, )",
+          "ReveilMusical.Application": "[1.0.0, )"
+        }
+      },
       "reveilmusical.infrastructure.users": {
         "type": "Project",
         "dependencies": {
