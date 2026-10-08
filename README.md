@@ -119,6 +119,8 @@ sequenceDiagram
     UseCase-->>Api: WakeUpOutcome (Degraded + raisons)
 ```
 
+Décisions techniques détaillées : [`docs/adr/`](./docs/adr/) (version du runtime, architecture hexagonale, Central Package Management, keyed services pour les fournisseurs musique, port `IOutbox` synchrone, choix d'ArchUnitNET).
+
 ## Patterns utilisés
 
 | Pattern | Où | Besoin métier servi |
