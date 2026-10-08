@@ -1,0 +1,12 @@
+[
+  {
+    "PackageName": "xunit.abstractions",
+    "PackageVersion": "2.0.3",
+    "Authors": ["xUnit.net"],
+    "PackageUrl": "https://www.nuget.org/packages/xunit.abstractions/2.0.3",
+    "Copyright": null,
+    "LicenseType": "Apache-2.0",
+    "LicenseUrl": "https://raw.githubusercontent.com/xunit/xunit/master/license.txt",
+    "Comment": "Transitive dependency of xunit (test-only). NuGet only exposes a legacy licenseUrl pointing to xunit's own license.txt, which is Apache-2.0 (verified against the xunit/xunit GitHub repository); nuget-license cannot map that URL to an SPDX id automatically, so it is listed here instead of being silently allow-listed."
+  }
+]
