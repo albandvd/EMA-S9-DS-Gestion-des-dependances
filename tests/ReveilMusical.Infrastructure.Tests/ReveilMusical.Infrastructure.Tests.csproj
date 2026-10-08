@@ -20,4 +20,8 @@
     <ProjectReference Include="../../src/ReveilMusical.Infrastructure.Music/ReveilMusical.Infrastructure.Music.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="Fixtures/**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>
