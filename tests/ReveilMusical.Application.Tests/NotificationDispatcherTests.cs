@@ -120,6 +120,6 @@ public class NotificationDispatcherTests
 
         result.ChannelUsed.ShouldBe(NotificationDispatcher.LastResortChannelId);
         result.Degraded.ShouldBeTrue();
-        await _outbox.Received(1).WriteAsync("undelivered", Arg.Any<string>(), Arg.Any<CancellationToken>());
+        _outbox.Received(1).Write("undelivered", Arg.Any<string>());
     }
 }

@@ -3,6 +3,7 @@
     <Project Path="src/ReveilMusical.Application/ReveilMusical.Application.csproj" />
     <Project Path="src/ReveilMusical.Domain/ReveilMusical.Domain.csproj" />
     <Project Path="src/ReveilMusical.Infrastructure.Music/ReveilMusical.Infrastructure.Music.csproj" />
+    <Project Path="src/ReveilMusical.Infrastructure.Notifications/ReveilMusical.Infrastructure.Notifications.csproj" />
     <Project Path="src/ReveilMusical.Infrastructure.Users/ReveilMusical.Infrastructure.Users.csproj" />
   </Folder>
   <Folder Name="/tests/">
