@@ -1,0 +1,24 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*.userprefs
+
+## Test / coverage
+TestResults/
+coverage/
+**/TestResults/
+
+## Runtime artifacts (this project)
+outbox/
+
+## Tooling
+*.nupkg
+*.snupkg
+
+## OS / editors
+.DS_Store
+.idea/
+*.swp
