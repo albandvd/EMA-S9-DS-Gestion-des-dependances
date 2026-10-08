@@ -13,6 +13,7 @@ internal sealed class MusicBrainzTrackProvider : ITrackProvider
     public const string RateLimiterKey = "musicbrainz-rate-limiter";
 
     private readonly HttpClient _httpClient;
+    private readonly MusicBrainzOptions _musicBrainzOptions;
     private readonly RateLimiter _rateLimiter;
     private readonly ILogger<MusicBrainzTrackProvider> _logger;
 
@@ -23,17 +24,23 @@ internal sealed class MusicBrainzTrackProvider : ITrackProvider
         ILogger<MusicBrainzTrackProvider> logger)
     {
         _httpClient = httpClient;
+        _musicBrainzOptions = options.Value.MusicBrainz;
         _rateLimiter = rateLimiter;
         _logger = logger;
 
         if (_httpClient.DefaultRequestHeaders.UserAgent.Count == 0)
         {
-            _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(options.Value.MusicBrainz.UserAgent);
+            _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(_musicBrainzOptions.UserAgent);
         }
     }
 
     public async Task<Track?> FindAsync(TrackQuery query, CancellationToken cancellationToken)
     {
+        if (_musicBrainzOptions.SimulateFailure)
+        {
+            throw new InvalidOperationException("Simulated MusicBrainz failure.");
+        }
+
         using var lease = _rateLimiter.AttemptAcquire();
         if (!lease.IsAcquired)
         {

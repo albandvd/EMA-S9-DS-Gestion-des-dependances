@@ -17,7 +17,7 @@ internal sealed class InMemoryUserPreferencesProvider : IUserPreferencesProvider
     {
         if (_options.SimulateFailure)
         {
-            throw new InvalidOperationException("User preferences service is simulating a failure.");
+            throw new UserPreferencesUnavailableException("User preferences service is simulating a failure.");
         }
 
         var profile = _options.Profiles.Find(p => p.UserId == userId.Value);

@@ -1,0 +1,64 @@
+@ReveilMusical.Api_HostAddress = http://localhost:5269
+
+### Réveil réussi (utilisateur connu, préférences/morceau/canal tous disponibles)
+POST {{ReveilMusical.Api_HostAddress}}/api/wake-ups
+Content-Type: application/json
+
+{
+  "userId": "u-1",
+  "dayOfWeek": "LUNDI",
+  "weather": "PLUIE"
+}
+
+### Jour/météo en anglais, insensible à la casse
+POST {{ReveilMusical.Api_HostAddress}}/api/wake-ups
+Content-Type: application/json
+
+{
+  "userId": "u-2",
+  "dayOfWeek": "monday",
+  "weather": "sunny"
+}
+
+### Utilisateur sans morceau pour cette météo -> fallback track de l'utilisateur
+POST {{ReveilMusical.Api_HostAddress}}/api/wake-ups
+Content-Type: application/json
+
+{
+  "userId": "u-5",
+  "dayOfWeek": "MARDI",
+  "weather": "NEIGE"
+}
+
+### Canal préféré inconnu (whatsapp pas encore enregistré) -> repli sur FallbackOrder
+POST {{ReveilMusical.Api_HostAddress}}/api/wake-ups
+Content-Type: application/json
+
+{
+  "userId": "u-4",
+  "dayOfWeek": "MARDI",
+  "weather": "PLUIE"
+}
+
+### Utilisateur inconnu -> 404 ProblemDetails
+POST {{ReveilMusical.Api_HostAddress}}/api/wake-ups
+Content-Type: application/json
+
+{
+  "userId": "u-does-not-exist",
+  "dayOfWeek": "LUNDI",
+  "weather": "PLUIE"
+}
+
+### Jour invalide -> 400 ProblemDetails
+POST {{ReveilMusical.Api_HostAddress}}/api/wake-ups
+Content-Type: application/json
+
+{
+  "userId": "u-1",
+  "dayOfWeek": "FUNDI",
+  "weather": "PLUIE"
+}
+
+### Santé du service
+GET {{ReveilMusical.Api_HostAddress}}/health
