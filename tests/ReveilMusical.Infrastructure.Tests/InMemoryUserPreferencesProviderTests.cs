@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Options;
+using ReveilMusical.Application;
 using ReveilMusical.Domain;
 using ReveilMusical.Infrastructure.Users;
 
@@ -53,7 +54,7 @@ public class InMemoryUserPreferencesProviderTests
     {
         var provider = CreateProvider(CreateOptions(simulateFailure: true));
 
-        await Should.ThrowAsync<InvalidOperationException>(
+        await Should.ThrowAsync<UserPreferencesUnavailableException>(
             () => provider.GetAsync(new UserId("u-42"), CancellationToken.None));
     }
 }
